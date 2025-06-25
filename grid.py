@@ -5,8 +5,8 @@ from config import SCREEN_WIDTH, SCREEN_HEIGHT
 from particles import PARTICLE_WIDTH, PARTICLE_HEIGHT, Sand
 
 class Grid:
-    _rows: int
-    _cols: int
+    _rows: int # 48
+    _cols: int # 64
     _grid: List[List[Particle]]
 
     def __init__(self):
@@ -22,9 +22,9 @@ class Grid:
 
 
     def _create_empty_grid(self) -> List[List[None]]:
-        self._rows, self._cols = round(SCREEN_WIDTH / PARTICLE_WIDTH), round(SCREEN_HEIGHT / PARTICLE_HEIGHT)
-        # grid = [[Sand(row * PARTICLE_WIDTH, col * PARTICLE_HEIGHT).y for col in range(self.cols)] for row in range(self.rows)]
+        self._rows, self._cols = round(SCREEN_HEIGHT / PARTICLE_HEIGHT), round(SCREEN_WIDTH / PARTICLE_WIDTH)
         grid = [[None for _ in range(self.cols)] for _ in range(self.rows)]
+        print(self.rows, self.cols)
         return grid
 
     def traverse_grid(self, window) -> None:
@@ -32,17 +32,17 @@ class Grid:
             for col in reversed(range(self.cols)):
                 particle = self._grid[row][col]
                 if particle:
-                    particle.update(self._grid, self.cols)
-                    particle.draw(window)
+                #     particle.update(self._grid)
+                    particle.draw(window, col, row)
 
     def create_particle(self, mouse_position: tuple[int, int]) -> None:
         x, y = mouse_position
         if not self._mouse_within_screen(x, y):
             return
 
-        row, col = floor(x/10), floor(y/10)
+        col, row = floor(x/10), floor(y/10)
         if self._grid[row][col] is None:
-            self._grid[row][col] = Sand(row * PARTICLE_WIDTH, col * PARTICLE_HEIGHT)
+            self._grid[row][col] = Sand()
 
 
     def _mouse_within_screen(self, x: int, y: int) -> bool:
