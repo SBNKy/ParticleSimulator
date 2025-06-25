@@ -31,9 +31,10 @@ class Grid:
         for row in reversed(range(self.rows)):
             for col in reversed(range(self.cols)):
                 particle = self._grid[row][col]
-                if particle:
-                #     particle.update(self._grid)
+                if particle and self.particle_in_screen_bounds(col, row):
+                    particle.update(self._grid, col, row, self.cols, self.rows)
                     particle.draw(window, col, row)
+
 
     def create_particle(self, mouse_position: tuple[int, int]) -> None:
         x, y = mouse_position
@@ -44,6 +45,8 @@ class Grid:
         if self._grid[row][col] is None:
             self._grid[row][col] = Sand()
 
+    def particle_in_screen_bounds(self, col, row):
+        return 0 <= row < self.rows and 0 <= col < self.cols
 
     def _mouse_within_screen(self, x: int, y: int) -> bool:
         return 0 <= x <= SCREEN_WIDTH - PARTICLE_WIDTH and 0 <= y <= SCREEN_HEIGHT - PARTICLE_HEIGHT

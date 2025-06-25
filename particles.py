@@ -17,19 +17,25 @@ class Particle(ABC):
         return self._COLOR
 
     @abstractmethod
-    def update(self) -> None:
+    def update(self, grid, col, row, total_cols, total_rows) -> None:
         ...
 
     @abstractmethod
-    def draw(self, window, x, y) -> None:
+    def draw(self, window, col, row) -> None:
         ...
 
 class Sand(Particle):
     def __init__(self):
         self._COLOR = (194, 178, 128)
 
-    def update(self) -> None:
-        pass
+    def update(self, grid, col, row, total_cols, total_rows) -> None:
+        if row+1 == total_rows:
+            return
 
-    def draw(self, window, x, y) -> None:
-        pygame.draw.rect(window, self.color, (x*10, y*10, PARTICLE_WIDTH, PARTICLE_HEIGHT))
+        if grid[row+1][col] is None:
+            grid[row][col] = None
+            grid[row+1][col] = self
+
+
+    def draw(self, window, col, row) -> None:
+        pygame.draw.rect(window, self.color, (col*10, row*10, PARTICLE_WIDTH, PARTICLE_HEIGHT))
