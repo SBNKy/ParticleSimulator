@@ -8,7 +8,6 @@ pygame.init()
 def main():
     window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Particle Simulator")
-    # pygame.display.set
     clock = pygame.time.Clock()
 
     grid = Grid()
